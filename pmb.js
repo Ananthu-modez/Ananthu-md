@@ -1,16 +1,16 @@
 const { DataTypes } = require('sequelize');
 const config = require('../../config');
 
-const MentionDB = config.DATABASE.define('men', {
+const PmbDB = config.DATABASE.define('pmblocker', {
     value: { type: DataTypes.TEXT },
     isEnable: { type: DataTypes.BOOLEAN }
 });
 
-exports.setMention = async ({ value, isEnable }) => {
-    const mentions = await MentionDB.findAll();
+exports.setPmb = async ({ value, isEnable }) => {
+    const Pmbs = await PmbDB.findAll();
     
-    if (!mentions.length) {
-        return await MentionDB.create({
+    if (!Pmbs.length) {
+        return await PmbDB.create({
             value: value || '',
             isEnable: typeof isEnable !== 'undefined' ? isEnable : false
         });
@@ -24,13 +24,13 @@ exports.setMention = async ({ value, isEnable }) => {
         updateData.isEnable = isEnable;
     }
     
-    return await mentions[0].update(updateData);
+    return await Pmbs[0].update(updateData);
 };
 
-exports.getMention = async () => {
-    const mentions = await MentionDB.findAll();
-    if (!mentions.length) {
+exports.getPmb = async () => {
+    const Pmbs = await PmbDB.findAll();
+    if (!Pmbs.length) {
         return { isEnable: false };
     }
-    return mentions[0].dataValues;
+    return Pmbs[0].dataValues;
 };
